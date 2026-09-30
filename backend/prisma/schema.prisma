@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  slackWebhook String?
+  emails       Email[]
+}
+
+model Email {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  senderEmail  String
+  targetEmail  String
+  subject      String
+  body         String
+  status       String   @default("PENDING")
+  scheduledAt  DateTime
+  sentAt       DateTime?
+  errorMessage String?
+  createdAt    DateTime @default(now())
+}
