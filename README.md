@@ -1,5 +1,7 @@
 # ReachInbox Full-Stack Email Job Scheduler
 
+> **🎥 Watch the Demo:** [Video Link](https://drive.google.com/file/d/1_N3TfbWkYRvIuvkI07ge6AfBh6Hn9kri/view?usp=sharing)
+
 A production-grade, full-stack email job scheduling and campaign management system built as part of the ReachInbox software engineering assignment. This application handles large-scale, rate-limited, and persistent email outreach without relying on OS-level or Node-based cron jobs.
 
 ---
@@ -58,3 +60,29 @@ cd reachinbox-scheduler
 
 # Spin up Postgres, Redis, and Elasticsearch containers
 docker compose up -d
+
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+# Ensure your .env file is configured with DATABASE_URL, REDIS_URL, and ELASTICSEARCH_HOST
+npx prisma db push
+npm run dev
+
+### 3. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+
+## 💡 Usage & Demo Flow
+1. **Login:** Authenticate via Google OAuth 2.0 on the React dashboard (`http://localhost:5173`).
+2. **Upload Leads:** Drop a CSV or text file containing target email addresses. The UI automatically parses and validates the email count.
+3. **Schedule:** Enter your subject, body, and future schedule time, then click **Schedule Campaign**.
+4. **Monitor:** View active jobs in the **Scheduled Emails** tab. Test system resilience by stopping the backend terminal (`Ctrl + C`) and restarting it (`npm run dev`) to verify persistence.
+5. **Dispatch:** Once timestamps hit, workers process the batch under rate limits and update logs to the **Sent Emails** tab.
+
+---
+
+## 👥 Authors
+* **Aryaan Mahapatra**
