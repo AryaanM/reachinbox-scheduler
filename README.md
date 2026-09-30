@@ -60,6 +60,7 @@ cd reachinbox-scheduler
 
 # Spin up Postgres, Redis, and Elasticsearch containers
 docker compose up -d
+```
 
 ### 2. Backend Setup
 ```bash
@@ -68,12 +69,16 @@ npm install
 # Ensure your .env file is configured with DATABASE_URL, REDIS_URL, and ELASTICSEARCH_HOST
 npx prisma db push
 npm run dev
+```
 
 ### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
+```
+
+---
 
 ## 💡 Usage & Demo Flow
 1. **Login:** Authenticate via Google OAuth 2.0 on the React dashboard (`http://localhost:5173`).
