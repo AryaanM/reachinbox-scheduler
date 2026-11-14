@@ -16,16 +16,16 @@ pipeline {
         stage('2. Deploy Docker Stack to AWS EC2') {
             steps {
                 sshagent(['aws-ec2-key']) {
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@$EC2_IP '
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@${EC2_IP} '
                             if [ ! -d "reachinbox-scheduler" ]; then
-                                git clone $GIT_REPO
+                                git clone ${GIT_REPO}
                             fi
                             cd reachinbox-scheduler
                             git pull origin main
                             docker compose up -d --build
                         '
-                    '''
+                    """
                 }
             }
         }
