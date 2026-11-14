@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_IP   = '54.225.32.19'
+        EC2_IP   = '52.203.208.215'
         GIT_REPO = 'https://github.com/AryaanM/reachinbox-scheduler.git'
     }
 
