@@ -1,0 +1,46 @@
+---
+- name: Automate ReachInbox Kubernetes Deployment
+  hosts: localhost
+  connection: local
+  vars:
+    project_root: "{{ playbook_dir }}/.."
+
+  tasks:
+
+    - name: Ensure Minikube is running
+      command: minikube status
+      register: minikube_status
+      ignore_errors: true
+      changed_when: false
+
+    - name: Start Minikube if stopped
+      command: minikube start --driver=docker
+      when: minikube_status.rc != 0
+
+    - name: Build Backend Docker Image inside Minikube
+      command: minikube image build -t reachinbox-backend:local ./backend
+      args:
+        chdir: "{{ project_root }}"
+
+    - name: Build Frontend Docker Image inside Minikube
+      command: minikube image build -t reachinbox-frontend:local ./frontend
+      args:
+        chdir: "{{ project_root }}"
+
+    - name: Apply Kubernetes Manifests
+      command: kubectl apply -f k8s/
+      args:
+        chdir: "{{ project_root }}"
+      register: k8s_apply_output
+
+    - name: Display Deployment Results
+      debug:
+        msg: "{{ k8s_apply_output.stdout_lines }}"
+
+    - name: Check Status of Pods
+      command: kubectl get pods
+      register: pod_status
+
+    - name: Display Pod Status
+      debug:
+        msg: "{{ pod_status.stdout_lines }}"
